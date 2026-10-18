@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CAK IMAM MINIMIZER PICTURE – Kecilkan Ukuran Gambar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+/* ===== WARNA & TEMA (ubah di sini) ===== */
+:root{--accent:#5b4bdb;--accent-2:#7c6cf0;--accent-soft:#eeebff;--bg:#f6f6fb;--surface:#fff;--text:#16152b;--muted:#5f5e78;--line:#e3e2f0;--ok:#12805c;--shadow:0 6px 24px rgba(40,30,120,.08);--r:18px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#8b7dff;--accent-2:#a79cff;--accent-soft:#25213f;--bg:#0f0e1a;--surface:#181728;--text:#f0effa;--muted:#a3a2bf;--line:#2c2a45;--ok:#4ad8a0;--shadow:0 6px 24px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--accent:#8b7dff;--accent-2:#a79cff;--accent-soft:#25213f;--bg:#0f0e1a;--surface:#181728;--text:#f0effa;--muted:#a3a2bf;--line:#2c2a45;--ok:#4ad8a0;--shadow:0 6px 24px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55;transition:background .3s,color .3s}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+/* Header & logo */
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo-mark{height:44px;width:auto;flex:none}
+.logo-text{display:flex;flex-direction:column;line-height:1.05;font-weight:800;letter-spacing:.2px}
+.logo-text b{font-size:1.15rem}
+.logo-text span{font-size:.68rem;font-weight:700;color:var(--accent);letter-spacing:1.6px}
+.icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;transition:.2s}
+.icon-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.icon-btn svg{width:20px;height:20px}
+/* Hero */
+.hero{text-align:center;padding:28px 0 22px}
+.hero h1{font-size:clamp(1.9rem,5.5vw,3.2rem);line-height:1.1;margin:0 0 12px;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:0 auto;max-width:520px;color:var(--muted);font-size:1.05rem}
+/* Upload */
+.drop{margin-top:26px;border:2px dashed var(--line);border-radius:24px;background:var(--surface);padding:44px 20px;text-align:center;cursor:pointer;transition:.25s;box-shadow:var(--shadow)}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop.over{transform:scale(1.012)}
+.drop .ico{width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.drop .ico svg{width:30px;height:30px}
+.drop h2{margin:0 0 4px;font-size:1.2rem}
+.drop small{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:11px 20px;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-2);transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent)}
+.btn-sm{padding:8px 14px;font-size:.88rem}
+.drop-actions{margin:16px auto 0;display:grid;gap:10px;width:min(260px,100%)}
+.drop-actions .btn{width:100%;justify-content:center;margin:0}
+.folder-row{margin-top:14px;display:flex;justify-content:center}
+.folder-row .btn{width:min(260px,100%);justify-content:center}
+.btn-folder{background:var(--accent);color:#fff;border:0}
+.btn-folder:hover{background:var(--accent-2);transform:translateY(-1px)}
+/* Settings */
+.panel{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.field label{display:block;font-weight:700;font-size:.9rem;margin-bottom:8px}
+.field label output{color:var(--accent);float:right}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+select,input[type=number]{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.row{display:flex;gap:8px}
+/* Progress */
+.progress{height:6px;border-radius:6px;background:var(--line);margin-top:20px;overflow:hidden;opacity:0;transition:opacity .2s}
+.progress.on{opacity:1}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .25s}
+/* Results */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:26px 0 12px}
+.bar h2{margin:0;font-size:1.15rem}
+.bar .sum{color:var(--muted);font-size:.9rem}
+.bar .acts{display:flex;gap:8px;flex-wrap:wrap}
+.list{display:grid;gap:12px;padding-bottom:30px}
+.card{display:grid;grid-template-columns:76px 1fr auto;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--shadow);animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.thumb{width:76px;height:76px;border-radius:12px;object-fit:cover;background:var(--bg);cursor:pointer;border:1px solid var(--line)}
+.meta{min-width:0}
+.name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sizes{color:var(--muted);font-size:.9rem;margin-top:2px}
+.sizes s{opacity:.8}
+.badge{display:inline-block;margin-left:8px;padding:2px 10px;border-radius:99px;background:var(--accent-soft);color:var(--ok);font-weight:800;font-size:.82rem}
+.badge.bad{color:#c0392b}
+.mini{height:6px;border-radius:6px;background:var(--line);margin-top:8px;overflow:hidden}
+.mini i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .3s}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.spin{width:18px;height:18px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical-align:-3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+[hidden]{display:none!important}
+/* Modal before/after */
+.modal{position:fixed;inset:0;background:rgba(10,8,30,.72);display:grid;place-items:center;padding:16px;z-index:50}
+.modal-box{background:var(--surface);border-radius:var(--r);padding:16px;width:min(900px,100%);max-height:92vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+.cmp{position:relative;overflow:hidden;border-radius:12px;background:var(--bg);user-select:none;touch-action:none;line-height:0}
+.cmp img{width:100%;max-height:68vh;object-fit:contain;display:block;transform:translate(var(--tx,0px),var(--ty,0px)) scale(var(--z,1));transform-origin:50% 50%;will-change:transform}
+.zoombar{gap:6px}.zoombar .btn{min-width:38px;justify-content:center;padding:8px 10px}#zreset{min-width:64px}
+.cmp .after{position:absolute;inset:0;clip-path:inset(0 0 0 50%)}
+.cmp .after img{height:100%}
+.handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.5);cursor:ew-resize}
+.handle::after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;line-height:1;font-size:18px}
+.tag{position:absolute;top:10px;padding:3px 10px;border-radius:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.78rem;font-weight:700;line-height:1.4}
+/* Toast */
+.welcome-steps{padding-left:20px;margin:10px 0 0;display:grid;gap:6px}
+#welcome{background:rgba(10,8,30,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:opacity .26s ease}
+#welcome .modal-box{border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.25);animation:popIn .45s cubic-bezier(.2,.8,.2,1) both;transition:transform .26s ease,opacity .26s ease}
+#welcome .welcome-steps li{opacity:0;animation:up .4s ease forwards}
+#welcome .welcome-steps li:nth-child(1){animation-delay:.12s}#welcome .welcome-steps li:nth-child(2){animation-delay:.2s}#welcome .welcome-steps li:nth-child(3){animation-delay:.28s}#welcome .welcome-steps li:nth-child(4){animation-delay:.36s}
+#welcome.out{opacity:0}
+#welcome.out .modal-box{transform:translateY(12px) scale(.97);opacity:0}
+@keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* Ring progres melayang (kanan) dan notifikasi ukuran hasil */
+.ring{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:45;width:60px;height:60px;border-radius:50%;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);display:grid;place-items:center}
+.ring svg{position:absolute;inset:4px;width:52px;height:52px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:113.1;stroke-dashoffset:113.1;transition:stroke-dashoffset .3s ease}
+.ring span{font-size:.72rem;font-weight:800;color:var(--accent)}
+@media(max-width:600px){.ring{right:8px;width:52px;height:52px}.ring svg{width:44px;height:44px}}
+.notice{position:fixed;left:0;right:0;bottom:20px;margin:0 auto;z-index:70;width:min(460px,calc(100% - 32px));background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.25);display:grid;gap:12px;animation:popIn .35s cubic-bezier(.2,.8,.2,1) both}
+.notice b{display:block;margin-bottom:4px}
+.ovlist{color:var(--muted);font-size:.88rem;max-height:96px;overflow:auto;white-space:pre-line}
+.ovacts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:99;max-width:calc(100% - 32px)}
+.toast{background:var(--text);color:var(--bg);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);animation:in .3s both;font-weight:600;font-size:.92rem}
+.toast.err{background:#c0392b;color:#fff}
+footer{text-align:center;color:var(--muted);padding:26px 0 34px;border-top:1px solid var(--line);font-size:.9rem}
+#tutbtn{position:fixed;left:12px;top:50%;transform:translateY(-50%);z-index:40;writing-mode:vertical-rl;background:var(--accent);color:#fff;border:0;padding:16px 10px;border-radius:14px;box-shadow:0 10px 30px rgba(91,75,219,.35)}
+.thumb:hover{outline:3px solid var(--accent);outline-offset:2px}
+@media(max-width:600px){#tutbtn{padding:10px 6px;font-size:.78rem;left:6px}}
+input[type=url],input[type=search]{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.chk{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}.chk input{width:18px;height:18px;accent-color:var(--accent)}
+.hint{display:block;color:var(--muted);font-size:.8rem;margin-top:4px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tools input,.tools select{flex:1;min-width:150px;width:auto;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.list.grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}.list.grid .card{grid-template-columns:1fr}.list.grid .thumb{width:100%;height:150px}.list.grid .actions{justify-content:flex-start}
+.tut{position:fixed;inset:0;overflow:auto;background:var(--bg);z-index:60;padding:calc(20px + env(safe-area-inset-top,0px)) 0 40px}
+.tut h2{margin:26px 0 10px}.tut ol{padding-left:0;list-style:none;display:grid;gap:10px;counter-reset:s}
+.tut li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px 14px 58px;position:relative}
+.tut li::before{content:counter(s);position:absolute;left:14px;top:12px;width:32px;height:32px;border-radius:10px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800}
+.tut li b{display:block}.tut li span,.tut p{color:var(--muted)}
+.tut table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden;font-size:.92rem}.tut td,.tut th{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+@media(max-width:600px){.card{grid-template-columns:60px 1fr}.thumb{width:60px;height:60px}.actions{grid-column:1/-1;justify-content:flex-start}}
+/* Tombol & panel pilih skin (kiri bawah) */
+#skinbtn{position:fixed;left:12px;bottom:24px;z-index:40;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--accent);box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer;transition:transform .2s}
+#skinbtn:hover{transform:scale(1.06)}
+#skinbtn svg{width:22px;height:22px}
+#skinpanel{position:fixed;left:12px;bottom:84px;z-index:40;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);display:grid;gap:6px;min-width:170px;animation:popIn .3s cubic-bezier(.2,.8,.2,1) both}
+#skinpanel p{margin:0 0 4px;font-weight:700;font-size:.82rem;color:var(--muted)}
+.sw{display:flex;align-items:center;gap:10px;border:1px solid transparent;background:none;padding:7px 10px;border-radius:10px;cursor:pointer;font-weight:600;font-size:.92rem;color:var(--text);transition:background .2s}
+.sw:hover{background:var(--accent-soft)}
+.sw[aria-pressed="true"]{border-color:var(--accent)}
+.sw i{width:18px;height:18px;border-radius:50%;display:block;flex:none}
+/* Skin: hanya mengubah warna aksen */
+:root[data-skin="biru"]{--accent:#2563eb;--accent-2:#3b82f6;--accent-soft:color-mix(in srgb,#2563eb 14%,transparent)}
+:root[data-skin="hijau"]{--accent:#0f9d7a;--accent-2:#14b890;--accent-soft:color-mix(in srgb,#0f9d7a 14%,transparent)}
+:root[data-skin="oranye"]{--accent:#ea580c;--accent-2:#f97316;--accent-soft:color-mix(in srgb,#ea580c 14%,transparent)}
+:root[data-skin="pink"]{--accent:#db2777;--accent-2:#ec4899;--accent-soft:color-mix(in srgb,#db2777 14%,transparent)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="#" aria-label="CAK IMAM MINIMIZER PICTURE">
+      <!-- Logo: tag "MB" besar mengecil menjadi "mb" kecil -->
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b7dff"/><stop offset="1" stop-color="#4a3bc4"/></linearGradient></defs>
+        <rect width="48" height="48" rx="14" fill="url(#lg)"/>
+        <!-- bingkai besar (GB) di atas -->
+        <rect x="6" y="6" width="20" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2.2"/>
+        <circle cx="20" cy="11" r="2" fill="#fff"/>
+        <path d="M9 19l5-5 4 4 3-3 3 4z" fill="#fff" opacity=".9"/>
+        <!-- panah turun -->
+        <path d="M16 23L23 31M19 31h4v-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- bingkai kecil (KB) di bawah -->
+        <rect x="26" y="28" width="16" height="12" rx="2.5" fill="#fff"/>
+        <path d="M29 37l3-3 2 2 2-2 3 3z" fill="#4a3bc4"/>
+      </svg>
+      <span class="logo-text"><b>CAK IMAM</b><span>MINIMIZER PICTURE</span></span>
+    </a>
+    <button class="btn btn-ghost btn-sm" id="tutbtn" type="button">Tutorial</button>
+    <button class="icon-btn" id="theme" aria-label="Ganti tema terang/gelap" title="Ganti tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </header>
+
+  <section class="hero">
+    <h1>Gambar berat? Kecilkan dalam hitungan detik.</h1>
+    <p>Kompres foto JPG, PNG, dan WebP langsung di browser. Tanpa akun, tanpa unggah ke server.</p>
+
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Area unggah gambar. Seret file ke sini atau tekan Enter untuk memilih">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg></div>
+      <h2>Seret gambar ke sini</h2>
+      <small>JPG, PNG, WebP, GIF, SVG · banyak file sekaligus · maks. 30 MB per file</small><br>
+      <div class="drop-actions">
+        <button class="btn btn-primary" id="pick" type="button">Pilih Gambar</button>
+      </div>
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml" multiple hidden>
+    </div>
+  <div class="folder-row">
+      <button class="btn btn-folder" id="pickdir" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Pilih Folder</button>
+      <input type="file" id="dir" webkitdirectory multiple hidden>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Pengaturan kompresi">
+    <div class="field">
+      <label for="q">Kualitas <output id="qv">70%</output></label>
+      <input type="range" id="q" min="10" max="100" value="70">
+    </div>
+
+    <div class="field">
+      <label for="f">Format hasil</label>
+      <select id="f">
+        <option value="image/jpeg">JPG</option>
+        <option value="image/webp">WebP</option>
+        <option value="image/avif">AVIF (butuh browser yang mendukung)</option>
+        <option value="image/png">PNG (kuantisasi warna + resize)</option>
+      </select>
+    </div>
+  </section>
+  <section class="panel" style="margin-top:14px" aria-label="Opsi lanjutan">
+    <div class="field"><label class="chk"><input type="checkbox" id="smart"> Mode otomatis cerdas</label><small class="hint">Kualitas dipilih otomatis (target hemat ±40%). Slider dinonaktifkan. Berlaku untuk JPG/WebP/AVIF.</small></div>
+    <div class="field"><label class="chk"><input type="checkbox" id="keep"> Pertahankan metadata EXIF</label><small class="hint">Hanya untuk JPG → JPG. Bila mati, lokasi dan data kamera dihapus.</small></div>
+    <div class="field"><label for="url">Ambil dari URL</label><div class="row"><input type="url" id="url" placeholder="https://…/foto.jpg"><button class="btn btn-ghost btn-sm" id="urlgo" type="button">Ambil</button></div></div>
+    
+  </section>
+  <div class="progress" id="prog" role="progressbar" aria-label="Progres kompresi"><i id="progbar"></i></div>
+
+  <section id="results" hidden>
+    <div class="bar">
+      <div><h2>Hasil kompresi</h2><div class="sum" id="sum"></div></div>
+      <div class="acts">
+        <button class="btn btn-primary btn-sm" id="zip" type="button">Simpan sebagai ZIP</button>
+        <button class="btn btn-ghost btn-sm" id="csv" type="button">Ekspor CSV</button>
+        <button class="btn btn-ghost btn-sm" id="cancel" type="button" hidden>Batalkan</button>
+        <button class="btn btn-ghost btn-sm" id="reset" type="button">Reset</button>
+      </div>
+    </div>
+    <div class="tools"><input type="search" id="srch" placeholder="Cari nama file…" aria-label="Cari nama file"><select id="sort" aria-label="Urutkan hasil"><option value="new">Urutan unggah</option><option value="name">Nama A–Z</option><option value="size">Ukuran hasil terbesar</option><option value="save">Penghematan terbesar</option></select><button class="btn btn-ghost btn-sm" id="gridbtn" type="button">Tampilan grid</button></div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <footer>Gambar Anda diproses di perangkat sendiri dan tidak pernah diunggah.<br>© CAK IMAM MINIMIZER PICTURE</footer>
+</div>
+
+<!-- Halaman tutorial -->
+<div class="tut" id="tut" hidden role="dialog" aria-label="Tutorial">
+  <div class="wrap">
+    <button class="btn btn-ghost btn-sm" id="tutback" type="button">← Kembali</button>
+    <h1 style="margin:18px 0 6px;font-size:clamp(1.7rem,5vw,2.4rem)">Cara memakai CAK IMAM MINIMIZER PICTURE</h1>
+    <p>Semua proses berjalan di browser Anda. Gambar tidak pernah dikirim ke server.</p>
+    <ol>
+      <li><b>Masukkan gambar</b><span>Seret file ke kotak unggah, klik Pilih Gambar, Pilih Folder, atau tempel alamat URL lalu klik Ambil.</span></li>
+      <li><b>Atur kualitas</b><span>Geser slider (70% cocok untuk kebanyakan foto). Atau centang Mode otomatis cerdas agar kualitas dipilih sendiri.</span></li>
+      <li><b>Pilih format</b><span>Pilih JPG, WebP, AVIF, atau PNG. WebP biasanya paling hemat.</span></li>
+      <li><b>Periksa hasil</b><span>Klik Bandingkan lalu geser garis untuk melihat sebelum dan sesudah. Ubah pengaturan kapan saja, semua gambar dikompres ulang otomatis.</span></li>
+      <li><b>Simpan</b><span>Satu foto diunduh langsung. Lebih dari satu foto disimpan dalam 1 file ZIP lewat tombol Simpan sebagai ZIP. Tombol Bagikan muncul di HP yang mendukung.</span></li>
+      <li><b>Laporan</b><span>Ekspor CSV berisi ukuran asli, ukuran hasil, dan persentase hemat. Gunakan kolom cari dan urutkan untuk banyak file.</span></li>
+    </ol>
+    <h2>Tips format</h2>
+    <table>
+      <tr><th>Format</th><th>Cocok untuk</th></tr>
+      <tr><td>JPG</td><td>Foto. Kompatibel di mana saja.</td></tr>
+      <tr><td>WebP</td><td>Web. Lebih kecil dari JPG, mendukung transparansi.</td></tr>
+      <tr><td>AVIF</td><td>Paling kecil, tetapi tidak semua browser bisa membuatnya. Jika tidak didukung, hasil disimpan sebagai PNG.</td></tr>
+      <tr><td>PNG</td><td>Logo dan screenshot. Ukuran dikecilkan lewat pengurangan warna (semakin rendah kualitas, semakin sedikit warna).</td></tr>
+      <tr><td>GIF / SVG</td><td>Diubah menjadi gambar diam. Animasi GIF tidak dipertahankan.</td></tr>
+    </table>
+    <h2>Bagus untuk diketahui</h2>
+    <p>Metadata EXIF (lokasi, kamera) dihapus secara default demi privasi. Aktifkan Pertahankan metadata EXIF jika perlu (hanya JPG ke JPG). Jika hasil lebih besar dari aslinya, gambar sudah terkompresi baik; turunkan kualitas. Ambil dari URL bisa gagal jika situs sumber memblokir akses (CORS); unduh gambarnya lalu unggah manual.</p>
+  </div>
+</div>
+<!-- Modal perbandingan -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-label="Perbandingan sebelum dan sesudah">
+  <div class="modal-box">
+    <div class="modal-head"><strong id="mt"></strong><div class="row zoombar"><button class="btn btn-ghost btn-sm" id="zout" type="button" aria-label="Perkecil">−</button><button class="btn btn-ghost btn-sm" id="zreset" type="button" aria-label="Reset zoom">100%</button><button class="btn btn-ghost btn-sm" id="zin" type="button" aria-label="Perbesar">+</button><button class="btn btn-ghost btn-sm" id="mclose" type="button">Tutup</button></div></div>
+    <div class="cmp" id="cmp">
+      <img id="ibefore" alt="Gambar asli">
+      <div class="after"><img id="iafter" alt="Gambar hasil kompresi"></div>
+      <span class="tag" style="left:10px">Sebelum</span><span class="tag" style="right:10px">Sesudah</span>
+      <div class="handle" id="handle"></div>
+    </div>
+  </div>
+</div>
+<!-- Popup selamat datang: muncul sekali saat pertama buka, tutup otomatis 10 detik -->
+<button id="skinbtn" type="button" aria-label="Pilih skin warna" title="Pilih skin warna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".8" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".8" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".8" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".8" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.7 1.6-1.6 0-.4-.2-.8-.4-1.1-.3-.4-.5-.8-.5-1.3 0-.9.7-1.6 1.6-1.6H17c2.8 0 5-2.2 5-5 0-4.9-4.5-8.4-10-8.4z"/></svg></button>
+<div id="skinpanel" hidden role="group" aria-label="Pilihan skin warna">
+  <p>Pilih skin</p>
+  <button class="sw" data-s="ungu" aria-pressed="true" type="button"><i style="background:#7c5cff"></i>Ungu</button>
+  <button class="sw" data-s="biru" aria-pressed="false" type="button"><i style="background:#2563eb"></i>Biru</button>
+  <button class="sw" data-s="hijau" aria-pressed="false" type="button"><i style="background:#0f9d7a"></i>Hijau</button>
+  <button class="sw" data-s="oranye" aria-pressed="false" type="button"><i style="background:#ea580c"></i>Oranye</button>
+  <button class="sw" data-s="pink" aria-pressed="false" type="button"><i style="background:#db2777"></i>Pink</button>
+</div>
+<div class="modal" id="welcome" hidden role="dialog" aria-modal="true" aria-label="Selamat datang">
+  <div class="modal-box" style="max-width:480px">
+    <h2 style="margin:0 0 4px">Selamat datang di CAK IMAM MINIMIZER PICTURE</h2>
+    <p style="color:var(--muted);margin:0">Cara cepat memakai:</p>
+    <ol class="welcome-steps">
+      <li>Seret foto ke kotak unggah, atau klik Pilih Gambar.</li>
+      <li>Atur kualitas dan format sesuai kebutuhan.</li>
+      <li>Klik foto untuk melihat perbandingan sebelum dan sesudah.</li>
+      <li>Unduh satu foto, atau simpan banyak foto sekaligus dalam 1 ZIP.</li>
+    </ol>
+    <div class="row" style="justify-content:flex-end;margin-top:16px">
+      <div class="row">
+        <button class="btn btn-ghost btn-sm" id="wtut" type="button">Buka Tutorial</button>
+        <button class="btn btn-primary btn-sm" id="wok" type="button">Mengerti</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Ring progres melayang -->
+<div class="ring" id="ring" hidden aria-hidden="true">
+  <svg viewBox="0 0 44 44"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" id="ringfg" cx="22" cy="22" r="18"/></svg>
+  <span id="ringtxt">0%</span>
+</div>
+<!-- Notifikasi foto yang hasilnya lebih besar dari aslinya -->
+<div class="notice" id="oversize" hidden role="alertdialog" aria-labelledby="ovtitle">
+  <div><b id="ovtitle"></b><div class="ovlist" id="ovlist"></div></div>
+  <div class="ovacts"><button class="btn btn-ghost btn-sm" id="ovkeep" type="button">Tetapkan saja</button><button class="btn btn-primary btn-sm" id="ovremove" type="button">Keluarkan dari list</button></div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+/* ===== PENGATURAN DEFAULT ===== */
+const MAX_FILE_MB = 30;      // batas ukuran file
+const TYPES = ['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'];
+const EXT = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/avif':'avif'};
+
+const $ = id => document.getElementById(id);
+let items = [], uid = 0, timer, cancelled = false, warned = false;
+
+/* ===== Util ===== */
+const fmt = b => b < 1024 ? b+' B' : b < 1048576 ? (b/1024).toFixed(1)+' KB' : (b/1048576).toFixed(2)+' MB';
+function toast(msg, err){
+  const t = document.createElement('div');
+  t.className = 'toast'+(err?' err':''); t.textContent = msg;
+  $('toasts').appendChild(t); setTimeout(()=>t.remove(), 4000);
+}
+function download(blob, name){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+const outName = it => it.file.name.replace(/\.[^.]+$/,'') + '-min.' + (it.ext || EXT[$('f').value]);
+
+
+/* ===== Tema ===== */
+$('theme').onclick = () => {
+  const dark = document.documentElement.dataset.theme === 'dark' ||
+    (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme:dark)').matches);
+  document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+};
+
+/* ===== Upload ===== */
+const drop = $('drop');
+$('pick').onclick = e => { e.stopPropagation(); $('file').click(); };
+drop.onclick = () => $('file').click();
+drop.onkeydown = e => { if(e.target !== drop) return; if(e.key==='Enter'||e.key===' '){ e.preventDefault(); $('file').click(); } };
+$('file').onchange = e => { addFiles(e.target.files); e.target.value=''; };
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+
+function addFiles(list, silent){
+  const fresh = [];
+  for(const f of list){
+    if(!TYPES.includes(f.type)){ if(!silent) toast(`"${f.name}" bukan JPG, PNG, WebP, GIF, atau SVG.`, true); continue; }
+    if(f.size > MAX_FILE_MB*1048576){ toast(`"${f.name}" melebihi ${MAX_FILE_MB} MB.`, true); continue; }
+    const it = {id:++uid, file:f, url:URL.createObjectURL(f), blob:null, outUrl:null, busy:false, pending:true, progress:0};
+    items.push(it); fresh.push(it);
+  }
+  if(fresh.length){ render(); run(fresh); }
+}
+
+/* ===== Kompresi (Canvas API) ===== */
+/* ===== Kompresi di Web Worker: decode, resize, dan encode berjalan di thread terpisah ===== */
+const WORKER_SRC = `
+// Kuantisasi warna untuk PNG: kualitas rendah = warna lebih sedikit = file lebih kecil
+function posterize(ctx, w, h, q){
+  const lv = Math.max(4, Math.round(q / 100 * 64)), s = 255 / (lv - 1);
+  const d = ctx.getImageData(0, 0, w, h), p = d.data;
+  for(let i = 0; i < p.length; i += 4){ p[i] = Math.round(p[i]/s)*s; p[i+1] = Math.round(p[i+1]/s)*s; p[i+2] = Math.round(p[i+2]/s)*s; }
+  ctx.putImageData(d, 0, 0);
+}
+self.onmessage = async e => {
+  const d = e.data;
+  try{
+    const bmp = d.bitmap || await createImageBitmap(d.file);
+    const w = bmp.width || 1024, h = bmp.height || 768;
+    const c = new OffscreenCanvas(w, h), ctx = c.getContext('2d');
+    if(d.type === 'image/jpeg'){ ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); } // latar putih untuk PNG transparan
+    ctx.drawImage(bmp, 0, 0, w, h);
+    self.postMessage({id: d.id, progress: 40});
+    if(d.type === 'image/png' && d.q < 100) posterize(ctx, w, h, d.q);
+    const enc = q => c.convertToBlob({type: d.type, quality: q});
+    self.postMessage({id: d.id, progress: 60});
+    let blob;
+    if(d.smart && d.type !== 'image/png'){ // mode cerdas: kualitas tertinggi yang menghemat >= 40%
+      for(const q of [.85, .75, .65, .55, .5]){ blob = await enc(q); if(blob.size <= d.origSize * .6) break; }
+    } else blob = await enc(d.q / 100);
+    self.postMessage({id: d.id, progress: 90});
+    self.postMessage({id: d.id, blob: blob});
+  }catch(err){ self.postMessage({id: d.id, error: String((err && err.message) || err)}); }
+};
+`;
+let worker = null, jobId = 0;
+function getWorker(){
+  if(!worker) worker = new Worker(URL.createObjectURL(new Blob([WORKER_SRC], {type: 'text/javascript'})));
+  return worker;
+}
+// SVG tidak bisa di-decode langsung di worker, jadi dirasterkan dulu di halaman utama
+async function svgBitmap(file){
+  const url = URL.createObjectURL(file);
+  try{
+    const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+    return await createImageBitmap(img);
+  } finally { URL.revokeObjectURL(url); }
+}
+// Kirim satu gambar ke worker lalu tunggu hasilnya; onp menerima persentase progres
+async function encodeInWorker(it, type, q, smart, onp){
+  const bitmap = it.file.type === 'image/svg+xml' ? await svgBitmap(it.file) : null;
+  const w = getWorker(), id = ++jobId;
+  return new Promise((resolve, reject) => {
+    const onMsg = e => {
+      if(e.data.id !== id) return;
+      if(e.data.progress !== undefined) return onp(e.data.progress);
+      w.removeEventListener('message', onMsg);
+      e.data.error ? reject(new Error(e.data.error)) : resolve(e.data.blob);
+    };
+    w.addEventListener('message', onMsg);
+    w.postMessage({id, type, q, smart, origSize: it.file.size, file: bitmap ? null : it.file, bitmap}, bitmap ? [bitmap] : []);
+  });
+}
+// Notifikasi saat semua foto selesai: pesan di halaman, dan notifikasi sistem jika tab tidak aktif
+function notifyDone(){
+  const n = items.filter(i => i.blob).length;
+  toast(`Selesai: ${n} foto sudah dikompres.`);
+  if('Notification' in window && Notification.permission === 'granted' && document.hidden){
+    new Notification('CAK IMAM MINIMIZER PICTURE', {body: `${n} foto selesai dikompres.`, icon: 'icon.svg'});
+  }
+}
+async function compress(it, onp = () => {}){
+  const type = $('f').value;
+  onp(15);
+  let blob = await encodeInWorker(it, type, +$('q').value, $('smart').checked, onp);
+  onp(90);
+  if(blob.type !== type && !warned){ warned = true; toast(`Browser ini tidak mendukung ${EXT[type].toUpperCase()}; hasil disimpan sebagai ${(EXT[blob.type]||'png').toUpperCase()}.`, true); }
+  if($('keep').checked && type === 'image/jpeg' && it.file.type === 'image/jpeg'){ try{ blob = await keepExif(it.file, blob); }catch(e){} }
+  it.ext = EXT[blob.type] || 'png';
+  if(it.outUrl) URL.revokeObjectURL(it.outUrl);
+  it.blob = blob; it.outUrl = URL.createObjectURL(blob); it.busy = false;
+}
+let working = false, settingsGen = 0, batchTotal = 0, batchDone = 0;
+// Tambah gambar ke antrean lalu jalankan pekerja
+function run(list){ list.forEach(i => i.pending = true); kick(); }
+// Gambar berikutnya: ikuti urutan tampilan dari atas ke bawah
+const nextItem = () => getView().find(i => i.pending) || items.find(i => i.pending);
+function setBatch(){ const p = batchTotal ? Math.round(batchDone/batchTotal*100) : 0; $('progbar').style.width = p + '%'; ringSet(p); }
+// Ring progres melayang: 0 sampai 100%
+function ringSet(p){
+  $('ring').hidden = false;
+  $('ringfg').style.strokeDashoffset = 113.1 * (1 - p/100);
+  $('ringtxt').textContent = p + '%';
+}
+// Setelah proses selesai, cek dari atas: apakah ada hasil yang lebih besar dari aslinya
+function checkOversize(){
+  const big = getView().filter(i => i.blob && i.blob.size > i.file.size && !i.keep);
+  if(!big.length) return;
+  $('ovtitle').textContent = `${big.length} foto hasilnya lebih besar dari aslinya`;
+  $('ovlist').textContent = big.map(i => `${i.file.name} (${fmt(i.file.size)} → ${fmt(i.blob.size)})`).join('\n');
+  $('oversize').hidden = false;
+  $('ovkeep').onclick = () => { big.forEach(i => i.keep = true); $('oversize').hidden = true; };
+  $('ovremove').onclick = () => {
+    const ids = new Set(big.map(i => i.id));
+    big.forEach(i => { URL.revokeObjectURL(i.url); if(i.outUrl) URL.revokeObjectURL(i.outUrl); });
+    items = items.filter(i => !ids.has(i.id));
+    $('oversize').hidden = true; render(); toast(`${big.length} foto dikeluarkan dari daftar.`);
+  };
+}
+function updProgress(it){ // perbarui persentase satu kartu tanpa render ulang
+  const c = document.querySelector(`[data-id="${it.id}"]`); if(!c) return;
+  const p = c.querySelector('.pct'), f = c.querySelector('.mini i');
+  if(p) p.textContent = it.progress + '%'; if(f) f.style.width = it.progress + '%';
+}
+// Satu pekerja saja: gambar diproses satu per satu dari atas ke bawah, tidak pernah bersamaan
+async function kick(){
+  if(working) return;
+  working = true; cancelled = false; warned = false;
+  batchTotal = items.filter(i => i.pending).length; batchDone = 0;
+  $('prog').classList.add('on'); setBatch(); $('cancel').hidden = false;
+  if('Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
+  let it;
+  while(!cancelled && (it = nextItem())){
+    it.busy = true; it.progress = 5; render();
+    const g = settingsGen;
+    try{ await compress(it, p => { it.progress = p; updProgress(it); }); it.pending = g !== settingsGen; }
+    catch(e){ toast(`Gagal memproses "${it.file.name}".`, true); items = items.filter(x => x !== it); }
+    it.busy = false; batchDone++; setBatch(); render();
+  }
+  items.forEach(i => { i.pending = false; i.busy = false; });
+  if(cancelled){ items = items.filter(i => i.blob); toast('Proses dibatalkan.'); }
+  else if(batchTotal){ notifyDone(); checkOversize(); }
+  setTimeout(() => { if(!working) $('ring').hidden = true; }, 1500);
+  working = false; $('cancel').hidden = true; render();
+  setTimeout(() => { if(!working) $('prog').classList.remove('on'); }, 500);
+}
+// Kompres ulang semua saat pengaturan berubah
+function redo(){ clearTimeout(timer); timer = setTimeout(()=>{ if(items.length){ settingsGen++; run(items); } }, 350); }
+$('q').oninput = e => { $('qv').textContent = e.target.value+'%'; redo(); };
+
+
+$('f').onchange = redo;
+
+/* ===== Tampilan hasil ===== */
+function render(){
+  $('results').hidden = !items.length;
+  const list = $('list');
+  // buat kartu baru / perbarui yang ada agar animasi hanya muncul sekali
+  const view = getView(), ids = new Set(view.map(i=>String(i.id)));
+  [...list.children].forEach(c => { if(!ids.has(c.dataset.id)) c.remove(); });
+  let before = 0, after = 0;
+  items.forEach(it => {
+    if(!ids.has(String(it.id))){ if(it.blob && !it.busy){ before += it.file.size; after += it.blob.size; } return; } // tersaring oleh pencarian
+    let card = list.querySelector(`[data-id="${it.id}"]`);
+    if(!card){ card = document.createElement('div'); card.className='card'; card.dataset.id = it.id; list.appendChild(card); }
+    if(it.busy || it.pending){
+      card.innerHTML = `<img class="thumb" src="${it.url}" alt=""><div class="meta"><div class="name"></div><div class="sizes">${it.busy ? `<span class="spin"></span> Mengompres <span class="pct">${it.progress||0}%</span>` : 'Menunggu giliran'}</div><div class="mini"><i style="width:${it.busy ? (it.progress||0) : 0}%"></i></div></div><div></div>`;
+      card.querySelector('.name').textContent = it.file.name; return;
+    }
+    before += it.file.size; after += it.blob.size;
+    const pct = Math.round((1 - it.blob.size/it.file.size)*100);
+    card.innerHTML = `<img class="thumb" src="${it.outUrl}" alt="Pratinjau ${''}" title="Bandingkan sebelum/sesudah">
+      <div class="meta"><div class="name"></div>
+      <div class="sizes"><s>${fmt(it.file.size)}</s> → <strong>${fmt(it.blob.size)}</strong>
+      <span class="badge ${pct<0?'bad':''}">${pct>0?'-'+pct:'+'+Math.abs(pct)}%</span></div></div>
+      <div class="actions">
+        <button class="btn btn-ghost btn-sm" data-a="cmp">Bandingkan</button>
+        ${navigator.canShare ? '<button class="btn btn-ghost btn-sm" data-a="sh">Bagikan</button>' : ''}
+        <button class="btn btn-primary btn-sm" data-a="dl">Download</button>
+        <button class="icon-btn" data-a="rm" aria-label="Hapus ${''}" title="Hapus" style="width:36px;height:36px">✕</button>
+      </div>`;
+    card.querySelector('.name').textContent = it.file.name;
+    card.querySelector('.thumb').alt = 'Pratinjau '+it.file.name;
+    card.querySelector('[data-a=rm]').setAttribute('aria-label','Hapus '+it.file.name);
+    card.querySelector('.thumb').onclick = () => openCmp(it);
+    card.querySelector('[data-a=cmp]').onclick = () => openCmp(it);
+    card.querySelector('[data-a=dl]').onclick = () => download(it.blob, outName(it));
+    const sh = card.querySelector('[data-a=sh]'); if(sh) sh.onclick = () => share(it);
+    card.querySelector('[data-a=rm]').onclick = () => { URL.revokeObjectURL(it.url); it.outUrl&&URL.revokeObjectURL(it.outUrl); items = items.filter(x=>x!==it); render(); };
+  });
+  $('zip').textContent = items.length > 1 ? `Simpan ${items.length} foto sebagai 1 ZIP` : 'Download';
+  view.forEach(it => { const c = list.querySelector('[data-id="'+it.id+'"]'); if(c) list.appendChild(c); }); // terapkan urutan
+  $('sum').textContent = before ? `${items.length} gambar · hemat ${fmt(Math.max(before-after,0))} (${fmt(before)} → ${fmt(after)})` : '';
+}
+$('reset').onclick = () => { items.forEach(i=>{URL.revokeObjectURL(i.url); i.outUrl&&URL.revokeObjectURL(i.outUrl);}); items=[]; render(); toast('Semua gambar dihapus.'); };
+
+/* ===== ZIP ===== */
+$('zip').onclick = async () => {
+  const ready = items.filter(i=>i.blob);
+  if(!ready.length) return toast('Belum ada gambar yang selesai dikompres.', true);
+  if(ready.length === 1) return download(ready[0].blob, outName(ready[0])); // 1 foto = unduh langsung
+  if(typeof JSZip === 'undefined') return toast('JSZip gagal dimuat. Periksa koneksi internet.', true);
+  const z = new JSZip(), used = {};
+  ready.forEach(i => { let n = outName(i); if(used[n]){ n = n.replace(/(\.\w+)$/, `-${++used[n]}$1`); } else used[n]=1; z.file(n, i.blob); });
+  download(await z.generateAsync({type:'blob'}), 'cak-imam-minimizer.zip');
+  toast('ZIP berhasil dibuat.');
+};
+
+/* ===== Slider sebelum/sesudah ===== */
+function openCmp(it){
+  $('mt').textContent = `${it.file.name} · ${fmt(it.file.size)} → ${fmt(it.blob.size)}`;
+  $('ibefore').src = it.url; $('iafter').src = it.outUrl;
+  setPos(50); resetZoom(); $('modal').hidden = false; $('mclose').focus();
+}
+function setPos(p){ p=Math.min(100,Math.max(0,p)); $('handle').style.left=p+'%'; document.querySelector('.after').style.clipPath=`inset(0 0 0 ${p}%)`; }
+const cmp = $('cmp'); let drag = false;
+// Zoom: tombol +/−, scroll mouse, atau double-klik. Saat diperbesar, geser gambar dengan menarik area gambar.
+let zm = 1, tx = 0, ty = 0;
+function applyZ(){
+  cmp.style.setProperty('--z', zm); cmp.style.setProperty('--tx', tx + 'px'); cmp.style.setProperty('--ty', ty + 'px');
+  $('zreset').textContent = Math.round(zm * 100) + '%';
+}
+function clampPan(){ // batasi geseran agar gambar tidak lepas dari bingkai
+  const r = cmp.getBoundingClientRect(), mx = (zm - 1) * r.width / 2, my = (zm - 1) * r.height / 2;
+  tx = Math.max(-mx, Math.min(mx, tx)); ty = Math.max(-my, Math.min(my, ty));
+}
+function setZoom(z){ zm = Math.min(5, Math.max(1, z)); if(zm === 1){ tx = 0; ty = 0; } else clampPan(); applyZ(); }
+function resetZoom(){ setZoom(1); }
+$('zin').onclick = () => setZoom(zm * 1.25);
+$('zout').onclick = () => setZoom(zm / 1.25);
+$('zreset').onclick = () => setZoom(1);
+cmp.addEventListener('wheel', e => { e.preventDefault(); setZoom(zm * (e.deltaY < 0 ? 1.15 : 1 / 1.15)); }, {passive: false});
+cmp.ondblclick = () => setZoom(zm > 1 ? 1 : 2.5);
+
+// Geser perbandingan (garis tengah) atau geser gambar saat diperbesar
+const move = e => { const r = cmp.getBoundingClientRect(); setPos((e.clientX - r.left) / r.width * 100); };
+let mode = null, sx = 0, sy = 0, stx = 0, sty = 0;
+cmp.onpointerdown = e => {
+  if(zm > 1 && e.target.id !== 'handle'){ mode = 'pan'; sx = e.clientX; sy = e.clientY; stx = tx; sty = ty; }
+  else { mode = 'cmp'; move(e); }
+  cmp.setPointerCapture(e.pointerId);
+};
+cmp.onpointermove = e => {
+  if(mode === 'cmp') move(e);
+  else if(mode === 'pan'){ tx = stx + e.clientX - sx; ty = sty + e.clientY - sy; clampPan(); applyZ(); }
+};
+cmp.onpointerup = () => mode = null;
+$('mclose').onclick = () => $('modal').hidden = true;
+$('modal').onclick = e => { if(e.target.id==='modal') $('modal').hidden = true; };
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ $('modal').hidden = true; $('tut').hidden = true; } });
+
+/* ===== Fitur tambahan ===== */
+
+// Salin segmen EXIF (APP1) dari JPG asli ke hasil; orientasi diset 1 karena kanvas sudah memutar gambar
+async function keepExif(orig, blob){
+  const buf = await orig.arrayBuffer(), a = new DataView(buf); let p = 2;
+  while(p < a.byteLength-4){
+    const m = a.getUint16(p), len = a.getUint16(p+2);
+    if(m === 0xFFE1){
+      const seg = new Uint8Array(buf.slice(p, p+len+2)), v = new DataView(seg.buffer), t = 10, le = seg[t] === 0x49;
+      const ifd = t + v.getUint32(t+4, le), n = v.getUint16(ifd, le);
+      for(let i=0;i<n;i++){ const e = ifd+2+i*12; if(v.getUint16(e,le) === 0x112) v.setUint16(e+8, 1, le); }
+      const out = new Uint8Array(await blob.arrayBuffer());
+      return new Blob([out.slice(0,2), seg, out.slice(2)], {type:'image/jpeg'});
+    }
+    if((m & 0xFF00) !== 0xFF00 || m === 0xFFDA) break; p += 2 + len;
+  }
+  return blob;
+}
+function getView(){
+  const s = $('srch').value.trim().toLowerCase(), k = $('sort').value;
+  const sv = i => i.blob ? 1 - i.blob.size/i.file.size : 0;
+  const by = {name:(a,b)=>a.file.name.localeCompare(b.file.name), size:(a,b)=>(b.blob?b.blob.size:0)-(a.blob?a.blob.size:0), save:(a,b)=>sv(b)-sv(a), new:(a,b)=>a.id-b.id}[k];
+  return items.filter(i => !s || i.file.name.toLowerCase().includes(s)).sort(by);
+}
+async function share(it){
+  const f = new File([it.blob], outName(it), {type:it.blob.type});
+  try{ if(navigator.canShare({files:[f]})) await navigator.share({files:[f], title:f.name}); else toast('Perangkat ini tidak bisa membagikan file tersebut.', true); }
+  catch(e){ if(e.name !== 'AbortError') toast('Gagal membagikan gambar.', true); }
+}
+$('pickdir').onclick = e => { e.stopPropagation(); $('dir').click(); };
+$('dir').onchange = e => { addFiles(e.target.files, true); e.target.value=''; };
+$('urlgo').onclick = async () => {
+  const u = $('url').value.trim(); if(!u) return toast('Masukkan alamat URL gambar.', true);
+  try{
+    const r = await fetch(u); if(!r.ok) throw 0; const b = await r.blob();
+    addFiles([new File([b], decodeURIComponent(u.split('?')[0].split('/').pop()) || 'gambar-url', {type:b.type})]); $('url').value = '';
+  }catch(e){ toast('Gagal mengambil gambar. Situs sumber mungkin memblokir akses (CORS); unduh lalu unggah manual.', true); }
+};
+$('url').onkeydown = e => { if(e.key==='Enter') $('urlgo').click(); };
+$('srch').oninput = render; $('sort').onchange = render;
+$('gridbtn').onclick = () => { const g = $('list').classList.toggle('grid'); $('gridbtn').textContent = g ? 'Tampilan daftar' : 'Tampilan grid'; };
+$('cancel').onclick = () => cancelled = true;
+$('smart').onchange = e => { $('q').disabled = e.target.checked; redo(); };
+$('keep').onchange = redo;
+$('csv').onclick = () => {
+  const rows = [['Nama file','Ukuran asli (byte)','Ukuran hasil (byte)','Penghematan (%)']];
+  items.filter(i=>i.blob).forEach(i => rows.push([outName(i), i.file.size, i.blob.size, Math.round((1-i.blob.size/i.file.size)*100)]));
+  if(rows.length < 2) return toast('Belum ada data untuk diekspor.', true);
+  download(new Blob(['\ufeff'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n')], {type:'text/csv'}), 'laporan-kompresi.csv');
+};
+$('tutbtn').onclick = () => { $('tut').hidden = false; $('tut').scrollTop = 0; };
+$('tutback').onclick = () => $('tut').hidden = true;
+
+/* ===== Skin warna: tombol di kiri bawah, pilihan disimpan di browser ===== */
+const SKINS = ['ungu', 'biru', 'hijau', 'oranye', 'pink'];
+function setSkin(s){
+  if(s === 'ungu') delete document.documentElement.dataset.skin; else document.documentElement.dataset.skin = s;
+  document.querySelectorAll('.sw').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === s)));
+  try{ localStorage.setItem('cim-skin', s); }catch(e){}
+}
+$('skinbtn').onclick = () => { $('skinpanel').hidden = !$('skinpanel').hidden; };
+document.querySelectorAll('.sw').forEach(b => b.onclick = () => setSkin(b.dataset.s));
+document.addEventListener('click', e => { if(!e.target.closest('#skinpanel, #skinbtn')) $('skinpanel').hidden = true; });
+(function(){
+  let s = 'ungu';
+  try{ s = localStorage.getItem('cim-skin') || 'ungu'; }catch(e){}
+  setSkin(SKINS.includes(s) ? s : 'ungu');
+})();
+
+/* ===== Popup selamat datang: sekali saat pertama buka, dengan animasi halus ===== */
+(function(){
+  let seen = false;
+  try{ seen = localStorage.getItem('cim-welcome-seen') === '1'; }catch(e){}
+  if(seen) return;
+  const w = $('welcome');
+  const close = () => {
+    if(w.classList.contains('out')) return;
+    w.classList.add('out');
+    try{ localStorage.setItem('cim-welcome-seen', '1'); }catch(e){}
+    setTimeout(() => { w.hidden = true; w.classList.remove('out'); }, 260);
+  };
+  w.hidden = false;
+  $('wok').onclick = close;
+  $('wtut').onclick = () => { close(); $('tut').hidden = false; $('tut').scrollTop = 0; };
+  w.onclick = e => { if(e.target === w) close(); };
+})();
+</script>
+</body>
+</html>
