@@ -1,296 +1,419 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Guru Suara — Bahasa Inggris Harian</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AC Tanpa Listrik - Pipa di Dalam Tanah</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#f3f6f2;--card:#ffffff;--ink:#1c2b24;--mute:#5d6d65;--acc:#1f6f5b;--acc2:#e4efe9;--warn:#b4532a;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a16;--card:#18251f;--ink:#e8f1ec;--mute:#9bb0a5;--acc:#5cc6a6;--acc2:#1f3329;--warn:#f0a57c}}
-:root[data-theme="dark"]{--bg:#101a16;--card:#18251f;--ink:#e8f1ec;--mute:#9bb0a5;--acc:#5cc6a6;--acc2:#1f3329;--warn:#f0a57c}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;line-height:1.5;min-height:100%}
-main{max-width:520px;margin:0 auto;padding:20px 18px 40px;display:flex;flex-direction:column;gap:16px}
-header{display:flex;justify-content:space-between;align-items:baseline}
-h1{font-size:1.25rem;margin:0}
-.streak{color:var(--mute);font-size:.9rem}
-.card{background:var(--card);border-radius:20px;padding:26px 22px;min-height:230px;display:flex;flex-direction:column;justify-content:center;gap:12px}
-.en{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;line-height:1.25;margin:0}
-.id{color:var(--mute);margin:0;font-size:1.05rem}
-.status{display:flex;align-items:center;gap:10px;min-height:28px;font-weight:600}
-.dot{width:12px;height:12px;border-radius:50%;background:var(--mute);flex:none}
-.speaking .dot{background:var(--acc);animation:p 1s infinite}
-.listening .dot{background:var(--warn);animation:p .7s infinite}
-@keyframes p{50%{transform:scale(1.5);opacity:.5}}
-@media (prefers-reduced-motion:reduce){.dot{animation:none!important}}
-.heard{color:var(--mute);font-size:.95rem;min-height:1.4em}
-.prog{display:flex;gap:6px}
-.prog i{flex:1;height:6px;border-radius:3px;background:var(--acc2)}
-.prog i.on{background:var(--acc)}
-button{font:inherit;font-weight:700;border:0;border-radius:16px;padding:16px;cursor:pointer;background:var(--acc);color:#fff;font-size:1.1rem}
-button.alt{background:var(--acc2);color:var(--ink)}
-button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
-.row{display:flex;gap:10px}.row button{flex:1}
-small{color:var(--mute)}
-.xp{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600}
-.bar{flex:1;height:10px;border-radius:5px;background:var(--acc2);overflow:hidden}
-.bar b{display:block;height:100%;background:var(--acc);width:0;transition:width .4s}
-.badges{display:flex;flex-wrap:wrap;gap:8px}
-.badges span{padding:6px 12px;border-radius:999px;font-size:.85rem;background:var(--acc2);color:var(--mute);opacity:.6}
-.badges span.on{background:var(--acc);color:#fff;opacity:1}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;z-index:9;text-align:center}
-#scn{display:flex;flex-direction:column;gap:10px}
-[hidden]{display:none!important}
+  html, body { margin: 0; height: 100%; background: #14202b; overflow: hidden; }
+  #stage {
+    position: absolute; left: 50%; top: 50%;
+    width: 720px; height: 1280px;
+    transform-origin: center center;
+    background: #5BC0EB; overflow: hidden;
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+  }
+  #stage canvas { position: absolute; left: 0; top: 0; }
+  .caption {
+    position: absolute; left: 50%; top: 130px;
+    width: 600px; box-sizing: border-box;
+    background: #ffffff; border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    padding: 22px 28px; text-align: center;
+    font-weight: 800; font-size: 40px; line-height: 1.3; color: #1d2b36;
+    opacity: 0;
+  }
+  .k-green { color: #1FB5A8; }
+  .k-red   { color: #E53935; }
+  .k-blue  { color: #2F80ED; }
+  #temp {
+    position: absolute; left: 50%; bottom: 170px;
+    transform: translateX(-50%);
+    background: #ffffff; border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    padding: 14px 32px; font-weight: 800; font-size: 56px; color: #1d2b36;
+    opacity: 0; white-space: nowrap;
+  }
 </style>
 </head>
 <body>
-<main>
-  <header><h1>Guru Suara</h1><span class="streak" id="streak"></span></header>
-  <div class="xp"><span id="lvl"></span><div class="bar"><b id="xpb"></b></div><span id="xpt"></span></div>
-  <div class="row"><button id="t1">Pelajaran</button><button class="alt" id="t2">Simulasi</button></div>
-  <div class="prog" id="prog"></div>
-  <section class="card" aria-live="polite">
-    <p class="en" id="en">Siap belajar hari ini?</p>
-    <p class="id" id="id">Tekan Mulai. Guru akan berbicara, lalu Anda menjawab dengan suara.</p>
-  </section>
-  <div class="status" id="status"><span class="dot"></span><span id="stx">Menunggu</span></div>
-  <div class="heard" id="heard"></div>
-  <button id="go">Mulai pelajaran hari ini</button>
-  <div class="row" id="ctl" hidden>
-    <button class="alt" id="skip">Lewati</button>
-    <button class="alt" id="stop">Berhenti</button>
-  </div>
-  <button class="alt" id="next" hidden>Saya sudah mengucapkan, lanjut</button>
-  <button id="retry" hidden>Ucapkan sekarang</button>
-  <div id="scn" hidden></div>
-  <div class="badges" id="badges"></div>
-  <div id="toast" hidden></div>
-  <small id="note">Tip: pakai earphone agar mikrofon tidak menangkap suara guru.</small>
-</main>
+<div id="stage"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const LESSONS=[
-["Good morning. How are you?","Selamat pagi. Apa kabar?"],
-["Nice to meet you.","Senang bertemu dengan Anda."],
-["Could you help me, please?","Bisakah Anda membantu saya?"],
-["I would like a cup of coffee.","Saya mau secangkir kopi."],
-["Where is the nearest station?","Di mana stasiun terdekat?"],
-["How much does this cost?","Berapa harganya ini?"],
-["I don't understand. Could you repeat that?","Saya tidak mengerti. Bisa diulang?"],
-["What time does the meeting start?","Jam berapa rapat dimulai?"],
-["I am learning English every day.","Saya belajar bahasa Inggris setiap hari."],
-["Let me think about it.","Biar saya pikirkan dulu."],
-["Thank you for your help.","Terima kasih atas bantuan Anda."],
-["I'm sorry, I'm late.","Maaf, saya terlambat."],
-["Can I pay by card?","Bisakah saya bayar dengan kartu?"],
-["What do you do for work?","Apa pekerjaan Anda?"],
-["I usually wake up at six.","Saya biasanya bangun jam enam."],
-["It's a pleasure to work with you.","Senang bekerja sama dengan Anda."],
-["Could you speak more slowly?","Bisakah Anda bicara lebih pelan?"],
-["I'm looking for a good restaurant.","Saya mencari restoran yang bagus."],
-["Have a nice weekend.","Selamat berakhir pekan."],
-["See you tomorrow.","Sampai jumpa besok."]
-];
-const $=id=>document.getElementById(id);
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-const synth=window.speechSynthesis;
-let run=0,rec=null,skipFlag=false,waitRes=null;
+// ================= CONFIG =================
+const W = 720, H = 1280, DURATION = 60;
+const Z0 = -1.5;                      // pusat z dari blok potongan tanah
+const TUBULAR = 400, RADIAL = 16, PIPE_R = 0.28;
 
-const key=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-const today=new Date();
-const dayNum=Math.floor(new Date(today.getFullYear(),today.getMonth(),today.getDate())/864e5);
-const todays=[0,1,2,3,4].map(i=>LESSONS[(dayNum*5+i)%LESSONS.length]);
+// ================= UTILITAS =================
+const stage = document.getElementById('stage');
+function fit() {
+  const s = Math.min(innerWidth / W, innerHeight / H);
+  stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+}
+addEventListener('resize', fit); fit();
 
-function load(){try{return JSON.parse(localStorage.getItem("guru-inggris"))||{}}catch(e){return{}}}
-function save(o){try{localStorage.setItem("guru-inggris",JSON.stringify(o))}catch(e){}}
-function showStreak(){const s=load();$("streak").textContent=s.streak?`Beruntun ${s.streak} hari, ${s.phrases||0} kalimat`:"Belum ada rekor";}
-function finishDay(){
-  const s=load(),t=key(today),y=new Date(today);y.setDate(y.getDate()-1);
-  if(s.last!==t){s.streak=(s.last===key(y))?(s.streak||0)+1:1;s.last=t;s.phrases=(s.phrases||0)+5;save(s);addXP(20,"pelajaran harian selesai");}
-  showStreak();
-}
-showStreak();
-const BADGES=[["Langkah pertama","xp",1],["100 XP","xp",100],["Beruntun 3 hari","streak",3],["25 kalimat","phrases",25],["Aktor simulasi","sims",1]];
-function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>{e.hidden=true},2500)}
-function gamify(){const s=load(),x=s.xp||0;$("lvl").textContent="Level "+(Math.floor(x/100)+1);$("xpb").style.width=(x%100)+"%";$("xpt").textContent=x+" XP";$("badges").innerHTML=BADGES.map(b=>`<span class="${(s.b||[]).includes(b[0])?"on":""}">${b[0]}</span>`).join("")}
-function checkBadges(){const s=load();s.b=s.b||[];BADGES.forEach(([n,k,v])=>{if(!s.b.includes(n)&&(s[k]||0)>=v){s.b.push(n);toast("Lencana baru: "+n)}});save(s);gamify()}
-function addXP(n,why){const s=load(),a=Math.floor((s.xp||0)/100);s.xp=(s.xp||0)+n;save(s);toast("+"+n+" XP, "+why);if(Math.floor(s.xp/100)>a)setTimeout(()=>toast("Naik ke Level "+(a+2)+"!"),1800);checkBadges()}
-gamify();
-function prog(){const s=load();return s.day===dayNum?(s.idx||0):0}
-function setIdx(i){const s=load();s.day=dayNum;s.idx=i;save(s)}
-function label(){const i=prog();return i>=todays.length?"Ulangi pelajaran hari ini":i>0?`Lanjutkan dari kalimat ${i+1}`:"Mulai pelajaran hari ini"}
-$("prog").innerHTML=todays.map((_,j)=>`<i class="${j<prog()?"on":""}"></i>`).join("");
-$("go").textContent=label();
-if(prog()>0&&prog()<todays.length)$("id").textContent=`Progres tersimpan: ${prog()} dari ${todays.length} kalimat selesai.`;
-if(!SR)$("note").textContent="Peramban ini tidak mendukung pengenalan suara. Guru tetap berbicara; tekan tombol lanjut setelah Anda mengucapkan. Untuk pengalaman penuh, gunakan Chrome atau Safari.";
-if(!synth){$("note").textContent="Peramban ini tidak mendukung suara. Gunakan Chrome, Edge, atau Safari.";$("go").disabled=true;}
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease  = x => { x = clamp(x); return x * x * (3 - 2 * x); };
+const lerp  = (a, b, t) => a + (b - a) * t;
+const lerpArr = (a, b, t) => a.map((v, i) => lerp(v, b[i], t));
+const rnd = i => { const s = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return s - Math.floor(s); };
 
-function pick(lang){
-  const v=synth.getVoices(),pre=lang.slice(0,2);
-  return v.find(x=>x.lang.replace("_","-")===lang)||v.find(x=>x.lang.toLowerCase().startsWith(pre))||null;
-}
-function say(text,lang,rate){
-  return new Promise(res=>{
-    if(skipFlag)return res();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang=lang;u.rate=rate||1;const v=pick(lang);if(v)u.voice=v;
-    u.onend=u.onerror=()=>res();
-    synth.speak(u);
-  });
-}
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);g.gain.value=.15;o.frequency.value=880;o.start();setTimeout(()=>{o.stop();c.close()},180)}catch(e){}}
-let micErr=null;
-async function listen(){
-  if(!SR)return new Promise(res=>{waitRes=res;$("next").hidden=false});
-  micErr=null;
-  while(synth.speaking)await sleep(100);
-  await sleep(800);beep();await sleep(300);
-  return new Promise(res=>{
-    let done=false;const fin=t=>{if(!done){done=true;res(t)}};
-    rec=new SR();rec.lang="en-US";rec.interimResults=false;
-    rec.onresult=e=>fin(e.results[0][0].transcript);
-    rec.onerror=e=>{micErr=e.error;fin(null)};rec.onend=()=>fin(null);
-    try{rec.start()}catch(e){fin(null)}
-    setTimeout(()=>{try{rec.stop()}catch(e){}},9000);
-  });
-}
-function listenOld(){
-  return new Promise(res=>{
-    if(!SR){waitRes=res;$("next").hidden=false;return;}
-    let done=false;const fin=t=>{if(!done){done=true;res(t)}};
-    rec=new SR();rec.lang="en-US";rec.interimResults=false;
-    rec.onresult=e=>fin(e.results[0][0].transcript);
-    rec.onerror=()=>fin(null);rec.onend=()=>fin(null);
-    try{rec.start()}catch(e){fin(null)}
-    setTimeout(()=>{try{rec.stop()}catch(e){}},9000);
-  });
-}
-const words=s=>s.toLowerCase().replace(/[^a-z' ]/g,"").split(/\s+/).filter(Boolean);
-function score(t,h){const a=words(t),b=new Set(words(h));return a.filter(w=>b.has(w)).length/a.length;}
-function state(cls,txt){$("status").className="status "+cls;$("stx").textContent=txt;}
+// ================= RENDERER & SCENE =================
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+stage.appendChild(renderer.domElement);
 
-async function lesson(){
-  const my=++run;skipFlag=false;const start=prog()>=todays.length?0:prog();if(start===0)setIdx(0);
-  const live=()=>my===run;
-  $("go").hidden=true;$("ctl").hidden=false;
-  synth.cancel();
-  state("speaking","Guru berbicara");
-  await say(start>0?`Selamat datang kembali! Kita lanjutkan dari kalimat ${start+1}.`:"Halo! Selamat datang. Hari ini kita belajar lima kalimat. Dengarkan, lalu ucapkan kembali dengan suara.","id-ID",1);
-  for(let i=start;i<todays.length&&live();i++){
-    const [en,id]=todays[i];skipFlag=false;
-    $("en").textContent=en;$("id").textContent=id;$("heard").textContent="";
-    document.querySelectorAll("#prog i").forEach((e,j)=>e.classList.toggle("on",j<=i));
-    state("speaking","Dengarkan");
-    await say(`Kalimat ${i+1}.`,"id-ID",1);if(!live())return;
-    await say(en,"en-US",.85);if(!live())return;
-    await say("Artinya: "+id,"id-ID",1);if(!live())return;
-    for(let t=0;t<3&&live()&&!skipFlag;t++){
-      await say(t?"Coba sekali lagi.":"Sekarang giliran Anda.","id-ID",1);if(!live())return;
-      if(t){state("speaking","Dengarkan lagi");await say(en,"en-US",.75);if(!live())return;}
-      state("listening","Giliran Anda: ucapkan");
-      const h=await listen();if(!live()||skipFlag)break;
-      $("next").hidden=true;
-      if(h===null&&SR){
-        if(micErr==="not-allowed"||micErr==="service-not-allowed"){$("heard").textContent="Mikrofon belum diizinkan. Izinkan di pengaturan peramban.";state("","Mikrofon diblokir");await say("Mikrofon belum diizinkan. Izinkan mikrofon di pengaturan peramban, lalu mulai lagi.","id-ID",1);$("stop").click();return;}
-        $("heard").textContent="Suara belum terdengar.";state("","Menunggu Anda");
-        await say("Saya belum mendengar suara Anda. Tekan tombol Ucapkan sekarang, lalu bicara.","id-ID",1);if(!live())return;
-        await new Promise(r=>{waitRes=r;$("retry").hidden=false});$("retry").hidden=true;
-        if(!live()||skipFlag)break;
-        t--;continue;
-      }
-      if(h)$("heard").textContent="Terdengar: "+h;
-      const s=h?score(en,h):1;
-      state("speaking","Guru berbicara");
-      if(s>=.7){addXP(t===0?10:6,"ucapan benar");await say("Bagus sekali!","id-ID",1);break;}
-      else if(t<2){await say("Hampir benar.","id-ID",1);}
-      else{await say("Tidak apa-apa. Kita lanjut, nanti kita ulang lagi.","id-ID",1);}
-    }
-    if(live())setIdx(i+1);
-  }
-  if(!live())return;
-  finishDay();
-  $("en").textContent="Pelajaran selesai!";$("id").textContent="Sampai jumpa besok.";
-  $("ctl").hidden=true;$("go").hidden=false;$("go").textContent="Ulangi pelajaran";
-  state("speaking","Guru berbicara");
-  await say("Pelajaran hari ini selesai. Kerja bagus! Sampai jumpa besok.","id-ID",1);
-  state("","Selesai");
-}
-function halt(){run++;$("retry").hidden=true;try{rec&&rec.abort()}catch(e){}synth.cancel();if(waitRes){waitRes(null);waitRes=null}$("next").hidden=true;}
-$("go").onclick=()=>{halt();if(synth.getVoices().length===0)synth.getVoices();lesson();};
-$("stop").onclick=()=>{halt();state("","Dihentikan");$("ctl").hidden=true;home();};
-$("skip").onclick=()=>{skipFlag=true;try{rec&&rec.abort()}catch(e){}synth.cancel();if(waitRes){waitRes(null);waitRes=null}};
-$("next").onclick=()=>{$("next").hidden=true;if(waitRes){const r=waitRes;waitRes=null;r("")}};
-$("retry").onclick=()=>{if(waitRes){const r=waitRes;waitRes=null;r("")}};
-if(synth)synth.onvoiceschanged=()=>{};
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#5BC0EB');
+const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 200);
 
-const SIMS={
-"Di kafe":{npc:"barista",turns:[
-["Hi there! Welcome. What can I get for you?","I would like a cup of coffee, please.","Saya mau secangkir kopi."],
-["Sure. Would you like it hot or iced?","Hot, please.","Panas, tolong."],
-["Anything else?","No, that's all. How much is it?","Tidak, itu saja. Berapa harganya?"],
-["That's four dollars.","Can I pay by card?","Bisakah saya bayar dengan kartu?"]]},
-"Di bandara":{npc:"petugas check-in",turns:[
-["Good morning. May I see your passport?","Here you go. I am going to London.","Ini dia. Saya akan ke London."],
-["Do you have any bags to check in?","Yes, I have one suitcase.","Ya, saya punya satu koper."],
-["Would you prefer a window or an aisle seat?","A window seat, please.","Kursi dekat jendela, tolong."],
-["Here is your boarding pass. Gate twelve.","Thank you. Where is gate twelve?","Terima kasih. Di mana gerbang dua belas?"]]}
+scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+const sun = new THREE.DirectionalLight(0xffffff, 0.7);
+sun.position.set(6, 14, 10);
+scene.add(sun);
+
+const mat = (color, opacity = 1, extra = {}) => new THREE.MeshStandardMaterial({
+  color, roughness: 0.6, metalness: 0,
+  transparent: opacity < 1, opacity, depthWrite: opacity >= 1, ...extra
+});
+const add = (geo, m, x = 0, y = 0, z = 0) => {
+  const mesh = new THREE.Mesh(geo, m);
+  mesh.position.set(x, y, z);
+  scene.add(mesh);
+  return mesh;
 };
-let mode="lesson";
-function home(){const m=mode==="sim";$("scn").hidden=!m;$("go").hidden=m;if(!m)$("go").textContent=label()}
-function setMode(m){halt();$("ctl").hidden=true;mode=m;$("t1").className=m==="lesson"?"":"alt";$("t2").className=m==="sim"?"":"alt";state("","Menunggu");$("heard").textContent="";
-  if(m==="sim"){$("en").textContent="Simulasi percakapan";$("id").textContent="Pilih situasi. Anda berbicara langsung dengan tokoh dalam bahasa Inggris.";$("prog").innerHTML=""}
-  else{$("en").textContent="Siap belajar hari ini?";$("id").textContent="Tekan Mulai. Guru akan berbicara, lalu Anda menjawab dengan suara.";$("prog").innerHTML=todays.map((_,j)=>`<i class="${j<prog()?"on":""}"></i>`).join("")}
-  home()}
-$("t1").onclick=()=>setMode("lesson");$("t2").onclick=()=>setMode("sim");
-$("scn").innerHTML=Object.keys(SIMS).map(k=>`<button class="alt" data-k="${k}">${k}</button>`).join("");
-$("scn").onclick=e=>{const k=e.target.dataset.k;if(k)sim(k)};
 
-async function turn(target,live){
-  for(let t=0;t<3;t++){
-    state("listening","Giliran Anda: jawab");
-    const h=await listen();if(!live())return"stop";if(skipFlag)return"skip";
-    $("next").hidden=true;
-    if(h===null&&SR){
-      if(micErr==="not-allowed"||micErr==="service-not-allowed"){$("heard").textContent="Mikrofon belum diizinkan. Izinkan di pengaturan peramban.";await say("Mikrofon belum diizinkan.","id-ID",1);$("stop").click();return"stop";}
-      $("heard").textContent="Suara belum terdengar.";state("","Menunggu Anda");
-      await say("Saya belum mendengar suara Anda. Tekan tombol, lalu bicara.","id-ID",1);if(!live())return"stop";
-      await new Promise(r=>{waitRes=r;$("retry").hidden=false});$("retry").hidden=true;
-      if(!live())return"stop";if(skipFlag)return"skip";
-      t--;continue;
+// ================= TANAH (potongan/cross-section) =================
+add(new THREE.BoxGeometry(30, 0.6, 5.5), mat(0x7CC37A, 0.92), 0, -0.3, Z0); // rumput
+add(new THREE.BoxGeometry(30, 2.6, 5.5), mat(0xC8763A, 0.55), 0, -1.9, Z0);  // tanah atas
+add(new THREE.BoxGeometry(30, 3.0, 5.5), mat(0x8B5A3C, 0.55), 0, -4.7, Z0);  // tanah dalam
+add(new THREE.BoxGeometry(30, 2.5, 5.5), mat(0x6F8797, 0.50), 0, -7.45, Z0); // lapisan air
+
+// Pohon
+function tree(x, z) {
+  add(new THREE.CylinderGeometry(0.25, 0.3, 2, 10), mat(0x8B5A3C), x, 1, z);
+  add(new THREE.SphereGeometry(1.4, 20, 16), mat(0x4E9E5B), x, 3.1, z);
+}
+tree(-13.5, Z0); tree(10, Z0);
+
+// ================= RUMAH =================
+const house = new THREE.Group();
+house.position.set(-6, 0, Z0);
+scene.add(house);
+{
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(4.2, 3, 4), mat(0xF5F5F0));
+  wall.position.y = 1.5; house.add(wall);
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(3.4, 1.8, 4), mat(0xF07A3D));
+  roof.rotation.y = Math.PI / 4; roof.position.y = 3.9; house.add(roof);
+  const door = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.6, 0.1), mat(0x1FB5A8));
+  door.position.set(0, 0.8, 2.05); house.add(door);
+}
+
+// ================= RUANGAN KECIL (tujuan pendinginan) =================
+const room = new THREE.Group();
+room.position.set(3, 0, Z0);
+scene.add(room);
+{
+  const wallMat = mat(0xFFFFFF);
+  const addLocal = (g, m, x, y, z) => { const mm = new THREE.Mesh(g, m); mm.position.set(x, y, z); room.add(mm); return mm; };
+  addLocal(new THREE.BoxGeometry(3.2, 0.2, 3.2), wallMat, 0, 0.1, 0);    // lantai
+  addLocal(new THREE.BoxGeometry(3.2, 2.4, 0.2), wallMat, 0, 1.3, -1.5); // dinding belakang
+  addLocal(new THREE.BoxGeometry(0.2, 2.4, 3.2), wallMat, -1.5, 1.3, 0); // dinding kiri
+  addLocal(new THREE.BoxGeometry(0.2, 2.4, 3.2), wallMat, 1.5, 1.3, 0);  // dinding kanan
+  addLocal(new THREE.BoxGeometry(3.4, 0.2, 3.4), mat(0xF07A3D), 0, 2.6, 0); // atap
+  // sofa
+  addLocal(new THREE.BoxGeometry(1.6, 0.6, 0.7), mat(0x1FB5A8), -0.3, 0.5, -1.0);
+  addLocal(new THREE.BoxGeometry(1.6, 0.9, 0.25), mat(0x1FB5A8), -0.3, 0.95, -1.3);
+  // termometer
+  addLocal(new THREE.CylinderGeometry(0.08, 0.08, 2.2, 10), mat(0xFFFFFF), 0.9, 1.4, -1.35);
+  addLocal(new THREE.SphereGeometry(0.16, 12, 10), mat(0xE53935), 0.9, 0.35, -1.35);
+}
+var mercury = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1, 8), mat(0xE53935));
+mercury.geometry.translate(0, 0.5, 0);          // pangkal di bawah
+mercury.position.set(3 + 0.9, 0.45, Z0 - 1.35 + 0.0);
+scene.add(mercury);
+
+// ================= PIPA BAWAH TANAH =================
+const pipeCurve = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-10.5, 1.3, Z0),   // lubang masuk di atas tanah
+  new THREE.Vector3(-10.5, -0.4, Z0),
+  new THREE.Vector3(-9.5, -2.2, Z0),
+  new THREE.Vector3(2.2, -2.2, Z0),    // horizontal di bawah tanah
+  new THREE.Vector3(3, -2.2, Z0),
+  new THREE.Vector3(3, -1.2, Z0),
+  new THREE.Vector3(3, 0.1, Z0)        // naik masuk ke ruangan
+], false, 'centripetal');
+
+const pipeGeo = new THREE.TubeGeometry(pipeCurve, TUBULAR, PIPE_R, RADIAL, false);
+const pipe = new THREE.Mesh(pipeGeo, new THREE.MeshStandardMaterial({
+  color: 0xCFE3EE, roughness: 0.35, metalness: 0.1, side: THREE.DoubleSide
+}));
+scene.add(pipe);
+
+// Genangan air di dasar pipa horizontal
+const pool = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.18, 0.18, 9.6, 20),
+  mat(0x4DA3FF, 0.85)
+);
+pool.rotation.z = Math.PI / 2;
+pool.position.set(-3.2, -2.27, Z0);
+pool.visible = false;
+scene.add(pool);
+
+// Partikel aliran udara di dalam pipa (oranye -> biru)
+const cOrange = new THREE.Color(0xF07A3D);
+const cBlue   = new THREE.Color(0x4DA3FF);
+const flow = [];
+for (let i = 0; i < 36; i++) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.09, 10, 8), mat(0xF07A3D));
+  m.scale.setScalar(0.0001);
+  scene.add(m);
+  flow.push({ m, off: i / 36 });
+}
+
+// Panah udara
+function makeArrow(color) {
+  const g = new THREE.Group();
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(0.38, 0.8, 16), mat(color));
+  cone.rotation.z = Math.PI;           // ujung menghadap ke bawah
+  g.add(cone);
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.9, 12), mat(color));
+  shaft.position.y = 0.85;
+  g.add(shaft);
+  scene.add(g);
+  return { g, cone, shaft };
+}
+const orangeArrow = makeArrow(0xF07A3D);
+orangeArrow.g.position.set(-10.5, 2.5, Z0);
+const blueArrow = makeArrow(0xF07A3D);
+blueArrow.g.position.set(3, 3.4, Z0);
+
+// ================= ADEGAN 1: partikel galian tanah =================
+const dirt = [];
+for (let i = 0; i < 40; i++) {
+  const m = add(new THREE.BoxGeometry(0.16, 0.16, 0.16), mat(0x8B5A3C), 0, -10, 0);
+  m.visible = false;
+  dirt.push({ m, i });
+}
+
+// ================= ADEGAN 3: udara panas tertahan =================
+const hot = [];
+for (let i = 0; i < 50; i++) {
+  const m = add(new THREE.SphereGeometry(0.09, 8, 6), mat(0xF07A3D), 0, 0, 0);
+  m.scale.setScalar(0.0001);
+  hot.push({
+    m, s: i,
+    x: -8 + rnd(i) * 10,
+    y: 0.6 + rnd(i + 100) * 1.2,
+    z: 1.2 + rnd(i + 200) * 1.4
+  });
+}
+
+// Tanda silang merah
+const redX = new THREE.Group();
+redX.position.set(-2.5, 2.7, 1.5);
+redX.scale.setScalar(0.0001);
+scene.add(redX);
+{
+  const xm = mat(0xE53935);
+  const b1 = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.22, 0.22), xm);
+  b1.rotation.z = Math.PI / 4;
+  const b2 = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.22, 0.22), xm);
+  b2.rotation.z = -Math.PI / 4;
+  redX.add(b1, b2);
+}
+
+// ================= ADEGAN 4: tetesan air di dalam pipa =================
+const drops = [];
+const DROP_N = 140;
+for (let i = 0; i < DROP_N; i++) {
+  const m = add(new THREE.SphereGeometry(0.05, 8, 6), mat(0x4DA3FF), 0, -10, 0);
+  m.visible = false;
+  drops.push({
+    m,
+    ts: 38.5 + (i / DROP_N) * 9,        // waktu munculnya tetesan
+    x: -6.5 + rnd(i) * 9,
+    a: rnd(i + 500) * Math.PI           // posisi di dinding atas pipa
+  });
+}
+
+// ================= ADEGAN 5: partikel udara sejuk di ruangan =================
+const cool = [];
+for (let i = 0; i < 30; i++) {
+  const m = add(new THREE.SphereGeometry(0.07, 8, 6), mat(0x4DA3FF), 0, 0, 0);
+  m.scale.setScalar(0.0001);
+  cool.push({ m, i });
+}
+
+// ================= KAMERA (keyframe) =================
+const orbit = a => [Math.sin(a) * 17, 5.5, Z0 + Math.cos(a) * 17];
+const KEYS = [
+  { t: 0,  p: orbit(-0.45), l: [0, -1.2, Z0] },     // orbit perlahan
+  { t: 10, p: orbit(0.25),  l: [0, -1.2, Z0] },
+  { t: 12, p: [0, 2.5, 13.5], l: [0, -1.5, Z0] },   // pandangan samping
+  { t: 22, p: [-1.5, 3, 13], l: [-1, -1.5, Z0] },
+  { t: 38, p: [0, 4, 12],    l: [-2, -1, Z0] },
+  { t: 42, p: [0.6, -2.2, Z0], l: [-6, -2.2, Z0] }, // masuk ke dalam pipa
+  { t: 49, p: [0.6, -2.2, Z0], l: [-6, -2.2, Z0] },
+  { t: 54, p: [0, 6, 16],    l: [0, -0.5, Z0] },    // kembali ke rumah
+  { t: 60, p: [0, 6, 16],    l: [0, -0.5, Z0] }
+];
+function camAt(t) {
+  for (let i = 0; i < KEYS.length - 1; i++) {
+    const a = KEYS[i], b = KEYS[i + 1];
+    if (t <= b.t) {
+      const e = ease((t - a.t) / (b.t - a.t));
+      return { p: lerpArr(a.p, b.p, e), l: lerpArr(a.l, b.l, e) };
     }
-    if(h)$("heard").textContent="Terdengar: "+h;
-    if(score(target,h||target)>=.6)return"ok";
-    state("speaking","Guru berbicara");
-    await say(t<2?"Hampir. Ucapkan seperti ini:":"Tidak apa-apa. Contohnya:","id-ID",1);if(!live())return"stop";
-    await say(target,"en-US",.8);if(!live())return"stop";
   }
-  return"miss";
+  const last = KEYS[KEYS.length - 1];
+  return { p: last.p, l: last.l };
 }
-async function sim(name){
-  const my=++run;skipFlag=false;const live=()=>my===run,S=SIMS[name];
-  synth.cancel();$("scn").hidden=true;$("ctl").hidden=false;
-  $("prog").innerHTML=S.turns.map(()=>"<i></i>").join("");
-  state("speaking","Guru berbicara");
-  await say(`Simulasi ${name}. Saya berperan sebagai ${S.npc}. Anda menjawab dalam bahasa Inggris.`,"id-ID",1);
-  for(let i=0;i<S.turns.length&&live();i++){
-    const [npc,me,id]=S.turns[i];skipFlag=false;
-    document.querySelectorAll("#prog i").forEach((e,j)=>e.classList.toggle("on",j<=i));
-    $("en").textContent=npc;$("id").textContent=`Saran jawaban: "${me}" (${id})`;$("heard").textContent="";
-    state("speaking","Lawan bicara berbicara");
-    await say(npc,"en-US",.95);if(!live())return;
-    await say("Giliran Anda.","id-ID",1);if(!live())return;
-    const r=await turn(me,live);if(!live()||r==="stop")return;
-    if(r==="ok")addXP(15,"jawaban benar");
-  }
-  if(!live())return;
-  const s=load();s.sims=(s.sims||0)+1;save(s);addXP(30,"simulasi selesai");
-  $("en").textContent="Simulasi selesai!";$("id").textContent="Anda berhasil menyelesaikan percakapan.";
-  $("ctl").hidden=true;home();state("speaking","Guru berbicara");
-  await say("Thank you, have a nice day!","en-US",.95);
-  await say("Simulasi selesai. Kerja bagus!","id-ID",1);state("","Selesai");
+
+// ================= TEKS KETERANGAN =================
+const CAPS = [
+  { s: 0.4,  e: 9.6,  html: 'Kalau kamu gali lubang di halaman' },
+  { s: 10.4, e: 21.6, html: 'Jadi <span class="k-green">pipanya</span> ditanam lebih dalam' },
+  { s: 22.4, e: 37.6, html: '<span class="k-red">Tapi</span> udara panas tertahan di atas tanah' },
+  { s: 38.4, e: 49.6, html: 'Udaranya <span class="k-blue">mengembun</span> di dalam pipa' },
+  { s: 50.4, e: 59.6, html: 'Hasilnya nggak sedingin AC, tapi <span class="k-green">lumayan sejuk</span> tanpa listrik' }
+];
+const capEls = CAPS.map(c => {
+  const el = document.createElement('div');
+  el.className = 'caption';
+  el.innerHTML = c.html;
+  stage.appendChild(el);
+  return el;
+});
+
+const tempEl = document.createElement('div');
+tempEl.id = 'temp';
+stage.appendChild(tempEl);
+
+// ================= RENDER PER WAKTU =================
+function renderAt(t) {
+  // Teks keterangan: fade-in dari bawah, fade-out di akhir
+  CAPS.forEach((c, i) => {
+    const fi = ease((t - c.s) / 0.5);
+    const fo = ease((c.e - t) / 0.4);
+    capEls[i].style.opacity = Math.min(fi, fo);
+    capEls[i].style.transform = `translate(-50%, ${(1 - fi) * 40}px)`;
+  });
+
+  // Kamera
+  const cam = camAt(t);
+  camera.position.set(cam.p[0], cam.p[1], cam.p[2]);
+  camera.lookAt(cam.l[0], cam.l[1], cam.l[2]);
+
+  // Adegan 1: partikel galian (0–10 detik)
+  dirt.forEach(({ m, i }) => {
+    const dt = t - (0.6 + i * 0.12);
+    if (t < 10 && dt > 0 && dt < 1.6) {
+      const vx = (rnd(i) - 0.5) * 2.2;
+      const vy = 3.2 + rnd(i + 3) * 2.2;
+      const x = -1.2 + rnd(i + 1) * 2.4 + vx * dt;
+      const y = 0.2 + vy * dt - 0.5 * 9 * dt * dt;
+      m.position.set(x, y, Z0 + (rnd(i + 2) - 0.5) * 2);
+      m.rotation.set(dt * 4 + i, dt * 3, 0);
+      m.visible = y > -0.3;
+    } else {
+      m.visible = false;
+    }
+  });
+
+  // Adegan 2: pipa tumbuh dari lubang masuk (10–18 detik)
+  const reveal = ease((t - 10) / 8);
+  pipeGeo.setDrawRange(0, Math.floor(TUBULAR * reveal) * RADIAL * 6);
+
+  // Panah oranye (udara masuk) muncul 13–15 detik, lalu melayang
+  const oS = ease((t - 13) / 2);
+  orangeArrow.g.scale.setScalar(oS + 0.0001);
+  orangeArrow.g.position.y = 2.5 + Math.sin(t * 3) * 0.1;
+
+  // Panah biru (udara keluar) muncul 15–17 detik, warnanya berubah bertahap
+  const bS = ease((t - 15) / 2) * (1 - ease((t - 38) / 1));
+  blueArrow.g.scale.setScalar(bS + 0.0001);
+  blueArrow.g.position.y = 3.4 + Math.sin(t * 3 + 1) * 0.1;
+  const bc = new THREE.Color(0xF07A3D).lerp(cBlue, ease((t - 16) / 6));
+  blueArrow.cone.material.color.copy(bc);
+  blueArrow.shaft.material.color.copy(bc);
+
+  // Partikel aliran: oranye di pintu masuk, berubah biru di pintu keluar
+  const flowS = ease((t - 14) / 2) * (1 - ease((t - 38) / 1));
+  flow.forEach(f => {
+    const u = (t * 0.08 + f.off) % 1;
+    const p = pipeCurve.getPointAt(u);
+    f.m.position.copy(p);
+    f.m.scale.setScalar(flowS + 0.0001);
+    f.m.material.color.copy(cOrange).lerp(cBlue, u);
+  });
+
+  // Adegan 3: udara panas tertahan + tanda silang (22–38 detik)
+  const hotF = ease((t - 22) / 2) * (1 - ease((t - 36) / 2));
+  hot.forEach(h => {
+    h.m.position.set(
+      h.x + Math.sin(t * 1.3 + h.s) * 0.5,
+      h.y + Math.sin(t * 1.7 + h.s * 2) * 0.2,
+      h.z
+    );
+    h.m.scale.setScalar(hotF + 0.0001);
+  });
+  const xF = ease((t - 24) / 2) * (1 - ease((t - 37) / 1));
+  redX.scale.setScalar(xF + 0.0001);
+
+  // Adegan 4: tetesan air dari dinding pipa, jatuh karena gravitasi (38–50 detik)
+  drops.forEach(d => {
+    const dt = t - d.ts;
+    if (dt < 0 || t > 50) { d.m.visible = false; return; }
+    d.m.visible = true;
+    const y0 = -2.2 + 0.2 * Math.sin(d.a);
+    const z0 = Z0 + 0.2 * Math.cos(d.a);
+    const floor = -2.35;
+    const y = Math.max(floor, y0 - 0.5 * 9 * dt * dt);
+    const landed = y <= floor;
+    d.m.position.set(d.x, y, landed ? Z0 + (rnd(d.x * 7) - 0.5) * 0.2 : z0);
+  });
+  pool.visible = t > 42;
+  pool.material.opacity = 0.85 * ease((t - 42) / 3);
+
+  // Adegan 5: ruangan sejuk + termometer turun 34°C -> 29°C (50–60 detik)
+  const tf = ease((t - 50.5) / 6);
+  const temp = lerp(34, 29, tf);
+  mercury.scale.y = Math.max(0.001, (temp - 18) * 0.12);
+  tempEl.textContent = Math.round(temp) + '°C';
+  tempEl.style.opacity = ease((t - 50) / 0.8) * (1 - ease((t - 59) / 0.8));
+
+  cool.forEach(({ m, i }) => {
+    const cS = ease((t - 50) / 2) * (1 - ease((t - 58) / 1));
+    m.position.set(
+      3 + (rnd(i) - 0.5) * 2.4,
+      0.6 + ((rnd(i + 7) + t * 0.25) % 1) * 1.6,
+      Z0 + (rnd(i + 9) - 0.5) * 2.2
+    );
+    m.scale.setScalar(cS + 0.0001);
+  });
+
+  renderer.render(scene, camera);
 }
+
+// ================= LOOP / MODE FRAME =================
+// ?t=detik  -> render satu frame pada waktu itu (untuk ekspor)
+// tanpa parameter -> putar real-time dan loop setiap 60 detik
+const params = new URLSearchParams(location.search);
+const fixedT = params.has('t') ? parseFloat(params.get('t')) : null;
+window.renderAt = renderAt;
+
+const startTime = performance.now();
+function loop() {
+  const t = fixedT !== null ? fixedT : ((performance.now() - startTime) / 1000) % DURATION;
+  renderAt(t);
+  if (fixedT === null) requestAnimationFrame(loop);
+}
+loop();
 </script>
 </body>
 </html>
